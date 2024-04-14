@@ -87,11 +87,27 @@ class CheckSession(Resource):
 class MemberOnlyIndex(Resource):
     
     def get(self):
+        if session['user_id'] != None:
+            articles = Article.query.filter_by(is_member_only=True).all()
+            response_body = []
+            for article in articles:
+                response_body.append(article.to_dict())
+            return make_response(response_body, 200, {})    
+        else:
+            return make_response({"error":"User not logged in"}, 401, {})
         pass
 
 class MemberOnlyArticle(Resource):
     
     def get(self, id):
+        if session['user_id'] != None:
+            articles = Article.query.filter_by(is_member_only=True).all()
+            response_body = []
+            for article in articles:
+                response_body.append(article.to_dict())
+            return make_response(response_body, 200, {})    
+        else:
+            return make_response({"error":"User not logged in"}, 401, {})
         pass
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
